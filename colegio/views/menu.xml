@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <menuitem id="menu_colegio_root" name="Colegio" sequence="0"></menuitem>
+  <menuitem id="menu_models_master" name="Models Details" parent="menu_colegio_root" sequence="0"></menuitem>
+  <menuitem id="menu_models" name="Models" parent="menu_models_master" sequence="0"></menuitem>
+</odoo>

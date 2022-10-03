@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<data>
+
+		<template id="report_factura_prueba">
+    	<t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+      		<t t-set="lang" t-value="o.partner_id.lang"/>
+          <t t-set="print_with_payments" t-value="True"/>
+					<t t-call="web.external_layout">
+						<div>
+							</div>
+								<div style="display: flex; line-height: 20px; align-items: center; text-align: center; margin-top: 5px;">
+									<span style="font-size: 22px;" t-field="o.partner_id" >.</span><br/>
+									<span style="font-size: 14px;" t-field="o.payment_reference">.</span><br/>
+									<span style="font-size: 14px;" class="test">NIT: <span t-field="o.x_nit" /> </span>
+								</div>
+								<div style="display:inline-block; line-height: 15px; align-items: rigth; text-align: center; margin-top: 5px; position: fixed; top: 20px; right: 1px; width: 300px;">
+									<span style="font-size: 12px;">Documento Tributario Electronico.</span><br/>
+									<span style="font-size: 14px; text-transform: uppercase;">Nota Credito Electronica.</span><br/>
+									<span style="font-size: 12px;">Serie: <span t-field="o.x_serie" />.</span><br/>
+									<span style="font-size: 12px;">Numero: <span t-field="o.x_numero" /></span><br/>
+								</div>
+								<div style="margin-left: 4px;">
+									<span>Fecha de Emision: <p class="m-0" t-field="o.invoice_date"/></span>
+								</div>
+
+								<div>
+									<div style="width: 600px; background-color: white; left:140px; top:160px; text-align:center; position: fixed; font-size: 12px;">
+										<span>UUID: <span t-field="o.x_uuid" />. </span><br/>
+										<span>Datos del receptor</span>
+									</div>
+									<table style="border: 2px solid black; margin-top: 25px;" class="table">
+										<tbody>
+											<tr>
+												<td >Nombre: <span> <span t-field="o.x_nombre" /> </span></td>
+												<td><span style="color: white;">...............................................</span></td>
+												<td>Nit: <span t-field="o.x_nit" /></td>
+											</tr>
+											<tr>
+												<td style="border: none !important;">Direccion: <span> <span t-field="o.x_direccion" /> </span></td>
+												<td style="border: none !important;"><span style="color: white">...............................................</span></td>
+												<td style="border: none !important;">Email: <span t-field="o.x_email" /> </td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div style="margin-top: 20px;" class="align-items-start">
+								<table class="table" name="invoice_line_table" style="border: 2px solid black;">
+									<thead class="thead-dark">
+										<tr style="font-size: 12px; text-align: left;">
+											<th><span>Cantidad</span></th>
+											<th ><span>Unidades</span></th>
+											<th style="text-align: center;" ><span>Descripcion</span></th>
+											<th><span>Precio</span></th>
+											<th>
+												<span groups="account.group_show_line_subtotals_tax_excluded">importe</span>
+												<span groups="account.group_show_line_subtotals_tax_included">Precio Total</span>
+											</th>
+										</tr>
+									</thead>
+									<tbody style="font-size:10px; border: 2px solid black">
+										<t t-set="current_subtotal" t-value="0"/>
+										<t t-set="lines" t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+
+										<t t-foreach="lines" t-as="line">
+											<t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+											<t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+											<tr>
+												<t t-if="not line.display_type" name="account_invoice_line_accountable">
+														<td class="text-left" style="height: 600px;">
+															<span t-field="line.quantity"/>
+															<span t-field="line.product_uom_id"  groups="uom.group_uom"/>
+														</td>
+														<td class="text-left" style="height: 600px;">
+															<span t-field="line.price_unit"/>
+														</td>
+														<td style="height: 600px;" class="text-left" name="account_invoice_line_name"><span t-field="line.name" t-options="{'widget': 'text'}"/></td>
+														<td style="height: 600px;" class="text-left" t-if="display_discount" >
+															<span t-field="line.discount"/>
+														</td>
+														<td style="height: 600px;" class="text-left">
+															<span t-field="line.price_subtotal" />
+														</td>
+														<td style="height: 600px;" class="text-left">
+															<span t-field="line.price_subtotal" />
+														</td>
+													</t>
+												</tr>
+											</t>
+									</tbody>
+								</table>
+
+								<div style="display: flex; position: fixed; font-size: 12px; top: 860px; left: 30px; ">
+									<span>Serie doc origen:</span><br/>
+									<span>Numero Documento de origen:</span><br/>
+									<span>Fecha emision doc origen:</span><br/>
+									<span>Numero autorizacion doc origen:</span><br/>
+									<span>Motivo ajuste:</span><br/>
+								</div>
+								<div style="display: flex; position: fixed; font-size: 12px; top: 860px; left: 240px;">
+									<span><span t-field="o.x_serie_origen" /></span><br/>
+									<span><span t-field="o.x_numero_origen" /></span><br/>
+									<span><p t-field="o.invoice_date"/></span>
+									<span><span t-field="o.x_numero_autorizacion" /></span><br/>
+									<span>Anulacion</span><br/>
+								</div>
+
+								<div style="position: fixed; top: 980px; width: 837px;">
+									<table class="table" style="border: 2px solid black">
+										<!--Tax totals-->
+										<t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>
+										<thead style="font-size: 12px; border: none !important;">
+											<tr>
+												<th style="border:none !important;">
+													<span>Total</span>
+												</th>
+												<th style="border:none !important; text-align: right;">
+													<span t-field="line.price_total" />
+												</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+
+								<div style=" position: fixed; top: 1050px; left: 590px ">
+									<image src="https://i0.wp.com/www.consultores.com.gt/wp-content/uploads/2021/07/FEL..png?fit=512%2C329&amp;ssl=1" style="width: 100px; height: 100px;" ></image>
+								</div>
+								<div style="position: fixed; top: 1050px; left: 720px; ">
+									<image src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Codigo_QR.svg/1200px-Codigo_QR.svg.png" style="width: 100px; height: 100px;"></image>
+								</div>
+
+								<div style="margin-top: 40px;">
+									<table class="table" style="border: 2px solid black">
+										<thead>
+											<tr>
+												<td style="border: none !important; font-size: 12px; text-transform: uppercase;"><span>Frases:</span></td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td style="border: none !important; font-size: 12px;">
+													<span>Identificador:</span><br/>
+													<span>CERTIFICADOR: <span t-field="o.x_certificador" /> </span><br/>
+													<span>NIT: 12521337</span><br/>
+													<span>Fecha de certificacion:</span><p t-field="o.invoice_date"/>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+
+						</div>
+					</t>
+				</t>
+			</t>
+    </template>
+
+		<record id="test_account_invoices" model="ir.actions.report">
+			<field name="name">Factura Test</field>
+			<field name="model">account.move</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="report_name">test.report_factura_prueba</field>
+			<field name="report_file">test.report_factura_prueba_test</field>
+			<field name="print_report_name">(object._get_report_base_filename())</field>
+			<field name="attachment">(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')</field>
+			<field name="binding_model_id" ref="account.model_account_move"/>
+			<field name="binding_type">report</field>
+			<field name="groups_id" eval="[(4, ref('account.group_account_invoice')),
+		(4, ref('account.group_account_readonly'))]"/>
+			<field name="x_numero" />
+      <field name="x_serie" />
+		</record>
+	</data>
+</odoo>
