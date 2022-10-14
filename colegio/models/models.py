@@ -5,17 +5,17 @@ class colegio(models.Model):
     _name = 'colegio.models'
     _description = 'colegio models'
 
-    name = fields.Char(string='Name')
-    age = fields.Integer(string='Age')
+    name = fields.Char(string='Nombre')
+    age = fields.Integer(string='Edad')
     gender = fields.Selection([
-			('male', 'Male'),
-			('female', 'Female')
-		], string='Gender')
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+			('male', 'Hombre'),
+			('female', 'Mujer')
+		], string='Genero')
+    direccion = fields.Char(string='Direccion')
+    telefono = fields.Char(string='Telefono')
+    padre_familiar = fields.Char(string='Padres de familia')
+    # pais = fields.Char(string='Pais')
+    # estado = fields.Selection([
+    #   ('true', 'Activo'),
+    #   ('false', 'No activo')
+    # ])

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_partner_tree" model="ir.ui.view">
+      <field name="name">estudiantes.tree</field>
+      <field name="model">estudiantes</field>
+      <field eval="8" name="priority"/>
+      <field name="arch" type="xml">
+          <tree string="Contacts" sample="1" multi_edit="1">
+              <field name="name" string="Name"/>
+              <field name="direccion" />
+							<field name="correo"/>
+							<field name="pais"/>
+              <field name="padre_familia"/>
+              <field name="age" />
+              <field name="gender"/>
+              <field name="telefono" />
+							<field name="estado" widget="badge" decoration-success="estado == 'true'" decoration-danger="estado == 'false'" />
+          </tree>
+      </field>
+    </record>
+
+		<record id="res_partner_kanban_view" model="ir.ui.view">
+			<field name="name">estudiantes.kanban</field>
+			<field name="model">estudiantes</field>
+			<field name="arch" type="xml">
+				<kanban class="o_res_partner_kanban" sample="1">
+					<field name="id"/>
+					<field name="name"/>
+					<field name="direccion"/>
+					<field name="padre_familia"/>
+					<field name="age"/>
+					<field name="gender"/>
+					<field name="telefono"/>
+					<field name="pais"/>
+					<field name="estado"/>
+					<field name="correo"/>
+					<field name="avatar_128"/>
+					<templates>
+						<t t-name="kanban-box">
+							<div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+								<div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('estudiantes', 'avatar_128', record.id.raw_value)})" role="img"/>
+								<div class="oe_kanban_details d-flex flex-column">
+									<strong style="font-size: 16px; text-align:center;" class="o_kanban_record_title oe_partner_heading"><field name="display_name"/></strong>
+									<div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+									<ul>
+										<li style="font-size: 14px;"><field name="age"/></li>
+										<li style="font-size: 14px;" class="o_text_overflow"><field name="gender"/></li>
+										<li style="font-size: 14px;"><field name="pais"/></li>
+										<li style="font-size: 14px;"><field name="estado" widget="badge" decoration-success="estado == 'true'" decoration-danger="estado == 'false'" /></li>
+									</ul>
+								</div>
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+
+		<record id="view_partner_form" model="ir.ui.view">
+			<field name="name">estudiantes.form</field>
+			<field name="model">estudiantes</field>
+			<field name="arch" type="xml">
+				<form string="contact">
+					<sheet>
+						<field name="avatar_128" invisible="1"/>
+            <field name="image_1920" widget='image' class="oe_avatar" options='{"preview_image": "avatar_128"}'/>
+						<div class="oe_title">
+              <h1>
+                <field id="individual" name="name" default_focus="1" />
+              </h1>
+            </div>
+						<group>
+							<group>
+								<label style="font-size: 18px; font-weigth: bold;" for="direccion" string="Direccion" />
+								<field name="direccion"/>
+								<field name="pais"/>
+							</group>
+
+							<group>
+								<label style="font-size: 18px; font-weigth: bold;" for="correo" string="Datos familiares" />
+								<field name="padre_familia"/>
+								<field name="correo" widget="email"/>
+							</group>
+						</group>
+						<group>
+							<group>
+								<label style="font-size: 18px; font-weigth: bold; width: 200px;" for="age" string="Informacion personal" />
+								<field name="age"/>
+								<field name="gender"/>
+							</group>
+
+							<group>
+								<label style="font-size: 18px; font-weigth: bold;" for="estado" string="actividad" />
+								<field name="telefono" widget="phone" />
+								<field name="estado" widget="badge" decoration-success="estado == 'true'" decoration-danger="estado == 'false'"/>
+							</group>
+
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+	</data>
+
+	<record id="action_estudiantes" model="ir.actions.act_window">
+  	<field name="name">Estudiantes</field>
+    <field name="type">ir.actions.act_window</field>
+  	<field name="res_model">estudiantes</field>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Create a Contact in your address book
+      </p>
+			<p>
+        Odoo helps you track all activities related to your contacts.
+      </p>
+    </field>
+  </record>
+
+	<menuitem id="estudiantes_menu"
+    name="Estudiantes"
+    action="action_estudiantes"
+    parent="contacts.menu_contacts"
+    sequence="2"/>
+</odoo>

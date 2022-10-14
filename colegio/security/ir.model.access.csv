@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_colegio_colegio,colegio.colegio,model_colegio_colegio,base.group_user,1,1,1,1
+colegio.manager_estudiantes,manager_estudiantes,colegio.model_estudiantes,base.group_system,1,1,1,1
+
+colegio.access_colegio_models,access_colegio_models,colegio.model_colegio_models,base.group_user,1,0,0,0
