@@ -1,2 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_test_test,test.test,model_test_test,base.group_user,1,1,1,1
+
+test.manager_vehiculo,manager_vehiculo,test.model_vehiculo,base.group_user,1,1,1,1
+test.access_vehiculo,access_vehiculo,test.model_vehiculo,base.group_user,1,0,0,0
+
+test.manager_marca,manager_marca,test.model_marca,base.group_user,1,1,1,1
+test.access_marca,access_marca,test.model_marca,base.group_user,1,0,0,0
+
+test.access_importar_catalogos_excel_wizard,access_importar_catalogos_excel_wizard,test.model_importar_catalogos_excel_wizard,base.group_user,1,1,1,1

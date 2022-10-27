@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="marca_view_tree" model="ir.ui.view">
+    <field name="name">marca_view_tree.tree</field>
+    <field name="model">marca</field>
+    <field name="arch" type="xml">
+      <tree string="marca" sample="1" multi_edit="1">
+        <field name="id" />
+        <field name="referencia"/>
+        <field name="name"/>
+        <field name="tipo"/>
+      </tree>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="marca_kanban_view">
+    <field name="name">marca.kanban</field>
+    <field name="model">marca</field>
+    <field name="arch" type="xml">
+      <kanban class="o_res_partner_kanban" sample="1">
+        <field name="id" />
+        <field name="referencia"/>
+        <field name="name"/>
+        <field name="tipo"/>
+        <templates>
+          <t t-name="kanban-box">
+            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+              <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('marca', 'avatar_128', record.id.raw_value)})" role="img"/>
+							<div class="oe_kanban_details d-flex flex-column">
+                <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                <div>
+                  <ul>
+                    <li style="font-size: 14px;"><field name="name"/></li>
+                    <li><field name="tipo"/></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+
+
+    <record id="marcas_move_form" model="ir.ui.view">
+      <field name="name">marca.form</field>
+      <field name="model">marca</field>
+      <field name="arch" type="xml">
+      	<form string="Account Entry">
+          <sheet>
+            <field name="avatar_128" invisible="1"/>
+            <field name="image_1920" widget='image' class="oe_avatar" options='{"preview_image": "avatar_128"}'/>
+            <div class="oe_title">
+              <group>
+              	<group>
+                	<field name="referencia"/>
+                	<field name="name"/>
+                  <field name="tipo"/>
+              	</group>
+              </group>
+              <notebook>
+                <page string="Vehiculo" name="vehiculo">
+                  <field name="vehiculo_id">
+                    <tree>
+                      <field name="name"/>
+                      <field name="recurso"/>
+                      <field name="placa"/>
+                    </tree>
+                  </field>
+                </page>
+              </notebook>
+            </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+
+  <record id="action_marca" model="ir.actions.act_window">
+    <field name="name">Marca</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">marca</field>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Create a Contact in your address book
+      </p>
+      <p>
+        Odoo helps you track all activities related to your contacts.
+      </p>
+    </field>
+  </record>
+
+  <menuitem id="marca_menu"
+    name="Marca"
+    action="action_marca"
+    parent="contacts.menu_contacts"
+    sequence="3"/>
+</odoo>
